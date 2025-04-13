@@ -1,0 +1,13 @@
+fastapi
+langchain
+duckduckgo-search
+newspaper3k
+openai
+finnhub-python
+python-dotenv
+uvicorn
+lxml[html_clean]
+transformers
+accelerate
+sentencepiece
+torch
