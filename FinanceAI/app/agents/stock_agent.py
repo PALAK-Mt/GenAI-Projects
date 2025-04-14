@@ -5,23 +5,18 @@ from transformers import pipeline
 summarizer = pipeline("summarization", model="google/pegasus-xsum")
 
 def analyze_stock(ticker):
-    # Agent 1: Get stock data
     stock_data = get_stock_data(ticker)
+    news = get_latest_news(ticker)
 
-    # Agent 2: Get financial news
-    news_articles = get_latest_news(ticker)
-
-    # Agent 3 (optional): Summarize each article
-    for article in news_articles:
-        summary_text = article.get("summary", "")
-        if summary_text and summary_text != "Summary could not be extracted.":
+    # Summarize news articles and append sentiment
+    for article in news:
+        if "summary" in article and article["summary"] != "Summary could not be extracted.":
             try:
-                summary = summarizer(summary_text, max_length=60, min_length=20, do_sample=False)
-                article["summary"] = summary[0]["summary_text"]
+                article["summary"] = summarizer(article["summary"], max_length=60, min_length=20, do_sample=False)[0]['summary_text']
             except Exception:
                 continue
 
     return {
         "stock_data": stock_data,
-        "news": news_articles
+        "news": news
     }

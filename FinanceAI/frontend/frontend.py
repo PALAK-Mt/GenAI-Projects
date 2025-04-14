@@ -18,6 +18,12 @@ if st.button("Analyze"):
             for article in data.get("news", []):
                 st.markdown(f"**{article.get('title')}**")
                 st.markdown(f"{article.get('summary')}")
+                confidence = article.get("confidence")
+                try:
+                    confidence = float(confidence)
+                    st.write(f"**Sentiment:** {article.get('sentiment')} (Confidence: {confidence:.2f})")
+                except (ValueError, TypeError):
+                    st.write(f"**Sentiment:** {article.get('sentiment')} (Confidence: {confidence})")
                 st.markdown(f"[Read more]({article.get('url')})")
                 st.markdown("---")
 
